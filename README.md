@@ -24,8 +24,8 @@ npm run check:bundle   # aucune information n8n dans le bundle
 npx vitest run
 ```
 
-La CI (`.github/workflows/ci.yml`) récupère `openapi.yaml` du dépôt backend avec le secret `BACKEND_REPO_TOKEN`
-(jeton GitHub en lecture seule limité au dépôt backend) et échoue si `src/api/schema.d.ts` n'est pas à jour.
+La CI (`.github/workflows/ci.yml`) récupère `openapi.yaml` du dépôt backend (public, aucun jeton nécessaire) et
+échoue si `src/api/schema.d.ts` n'est pas à jour.
 
 ## Configuration
 

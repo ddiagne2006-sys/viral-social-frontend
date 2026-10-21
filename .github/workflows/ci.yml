@@ -26,11 +26,10 @@ jobs:
         with:
           path: frontend
 
-      # Seulement openapi.yaml du dépôt backend (privé) : jeton en lecture seule dans le secret BACKEND_REPO_TOKEN
+      # Seulement openapi.yaml du dépôt backend (public : le jeton par défaut de la CI suffit pour le lire)
       - uses: actions/checkout@v4
         with:
           repository: ddiagne2006-sys/viral-social-backend
-          token: ${{ secrets.BACKEND_REPO_TOKEN }}
           path: backend
           sparse-checkout: openapi.yaml
           sparse-checkout-cone-mode: false
