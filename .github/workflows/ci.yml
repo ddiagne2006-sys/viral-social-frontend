@@ -1,0 +1,62 @@
+# Intégration continue du front de Viral Social (React).
+# Les types de l'API sont générés depuis openapi.yaml du dépôt backend : les deux dépôts sont récupérés côte à côte
+# (frontend/ et backend/), comme sur le poste de développement, pour que `npm run api:types` trouve ../backend.
+name: CI
+
+on:
+  push:
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  frontend:
+    name: Front (React)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: frontend
+
+      # Seulement openapi.yaml du dépôt backend (privé) : jeton en lecture seule dans le secret BACKEND_REPO_TOKEN
+      - uses: actions/checkout@v4
+        with:
+          repository: ddiagne2006-sys/viral-social-backend
+          token: ${{ secrets.BACKEND_REPO_TOKEN }}
+          path: backend
+          sparse-checkout: openapi.yaml
+          sparse-checkout-cone-mode: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Dépendances
+        run: npm ci
+
+      - name: Types de l'API à jour (générés depuis le openapi.yaml du backend)
+        run: |
+          npm run api:types
+          git diff --exit-code -- src/api/schema.d.ts
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Build
+        run: npm run build
+
+      - name: Aucune information n8n dans le bundle
+        run: npm run check:bundle
+
+      - name: Tests
+        run: npx vitest run

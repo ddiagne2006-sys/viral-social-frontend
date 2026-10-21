@@ -1,0 +1,146 @@
+@import "tailwindcss";
+
+/* Jetons de design (skill viral-social-react-ui, cahier des charges section 9).
+   Les composants n'utilisent que ces jetons, jamais de couleur écrite en dur. */
+@theme {
+  --font-sans: Roboto, sans-serif;
+
+  --color-primary: #2563eb;
+  --color-primary-hover: #1d4ed8;
+  --color-primary-tint: #eff4ff;
+  --color-nav-hover: #dbe5fb;
+  --color-sidebar: #e8eefc;
+  --color-ink: #111827;
+  --color-ink-soft: #374151;
+  --color-muted: #6b7280;
+  --color-line: #e5e7eb;
+  --color-success: #16a34a;
+  --color-success-bg: #dcfce7;
+  --color-warning: #d97706;
+  --color-warning-bg: #fef3c7;
+  --color-info-bg: #dbeafe;
+  --color-danger: #b91c1c;
+  --color-danger-bg: #fee2e2;
+
+  /* Repris du prototype Viral Studio */
+  --color-accent: #7e22ce; /* badge d'angle d'une idée */
+  --color-accent-tint: #f3e8ff;
+  --color-surface-soft: #f6f8fd; /* blocs plan, lumière, ambiance */
+  --color-surface-muted: #f3f4f6;
+  --color-code-bg: #0f172a; /* bloc prompt */
+  --color-code-ink: #e2e8f0;
+  --color-code-accent: #a5b4fc;
+  --color-stripe-a: #eef2fb; /* vignette de scène */
+  --color-stripe-b: #e3e9f7;
+  --color-timeline-past: #bfd3fb;
+  --color-avatar-bg: #c7d2fe;
+  --color-avatar-ink: #3730a3;
+  --color-brand-tiktok: #111827;
+  --color-brand-facebook: #1877f2;
+  --color-brand-youtube: #dc2626;
+
+  --shadow-card: 0 4px 24px rgb(37 99 235 / 0.06);
+  --shadow-lift: 0 12px 28px rgb(37 99 235 / 0.16);
+
+  --animate-fade-up: fade-up 0.45s ease both;
+  --animate-pulse-warning: pulse-warning 1.2s infinite;
+  --animate-toast-in: toast-in 0.3s ease both;
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes pulse-warning {
+    0%,
+    100% {
+      box-shadow: 0 0 0 0 rgb(217 119 6 / 0.45);
+    }
+    50% {
+      box-shadow: 0 0 0 6px rgb(217 119 6 / 0);
+    }
+  }
+  @keyframes toast-in {
+    from {
+      opacity: 0;
+      transform: translateY(16px) scale(0.96);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  /* Dégradés : logo et bouton de génération, fond de page */
+  --color-brand-start: #2563eb;
+  --color-brand-end: #a855f7;
+  --color-page-start: #eaf0fc;
+  --color-page-end: #f6f1fb;
+
+  --radius-field: 10px;
+  --radius-card: 14px;
+
+  --spacing-sidebar: 236px;
+  --spacing-touch: 44px;
+
+  --text-title: 26px;
+  --text-title--line-height: 1.25;
+  --text-title--font-weight: 700;
+}
+
+@utility bg-brand {
+  background-image: linear-gradient(135deg, var(--color-brand-start), var(--color-brand-end));
+}
+
+/* Chevron du fil d'étapes (dès md) */
+@utility clip-chevron {
+  clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 50%, calc(100% - 14px) 100%, 0 100%, 14px 50%);
+}
+
+@utility bg-stripes {
+  background-image: repeating-linear-gradient(
+    135deg,
+    var(--color-stripe-a) 0 10px,
+    var(--color-stripe-b) 10px 20px
+  );
+}
+
+@utility bg-page {
+  background-image: linear-gradient(135deg, var(--color-page-start), var(--color-page-end));
+  background-attachment: fixed;
+}
+
+@layer base {
+  body {
+    @apply bg-page font-sans text-sm text-ink antialiased;
+    min-height: 100dvh;
+  }
+
+  /* 16 px minimum : évite le zoom automatique d'iOS sur les champs */
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
